@@ -344,7 +344,7 @@ public final class ChessMap {
             ++start_x;
             ++start_y;
             ++cnt;
-        }
+        }//
         if(cnt==1){
             s.append('0');
         }else if(cnt==2){
