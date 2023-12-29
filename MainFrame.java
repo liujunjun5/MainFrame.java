@@ -179,7 +179,7 @@ public final class MainFrame extends JFrame {
 
     private void printChess() {
         Node node = chessMap.nodes.get(chessMap.nodes.size() - 1);
-        if (chessMap.thisChessColor(chessMap.nodes.size()) == ChessMap.WHITE) {
+        if (chessMap.thisChessColor(chessMap.nodes.size()) == ChessMap.w) {
             jTextArea.append("White:(" + (char) ('A' + node.y - 1) + "," + (19 - node.x + 1) + ")\n");
         } else {
             jTextArea.append("Black:(" + (char) ('A' + node.y - 1) + "," + (19 - node.x + 1) + ")\n");
@@ -207,7 +207,7 @@ public final class MainFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == firstHand) {
-                personColor = ChessMap.BLACK;
+                personColor = ChessMap.b;
                 restar.setEnabled(true);
                 firstHand.setEnabled(false);
                 lastHand.setEnabled(false);
@@ -218,7 +218,7 @@ public final class MainFrame extends JFrame {
                 thred.isStop = false;
                 thred.start();
             } else if (e.getSource() == lastHand) {
-                personColor = ChessMap.WHITE;
+                personColor = ChessMap.w;
                 restar.setEnabled(true);
                 firstHand.setEnabled(false);
                 lastHand.setEnabled(false);
@@ -227,7 +227,7 @@ public final class MainFrame extends JFrame {
                 firstTime.add(0L);
                 lastTime.add(0L);
                 firstTime.add(10L);
-                chessMap.chessmap[10][10] = ChessMap.BLACK;
+                chessMap.chessMap[10][10] = ChessMap.b;
                 chessMap.updataFlag(10, 10, 1);
                 chessMap.nodes.add(new Node(10, 10));
                 printChess();
@@ -246,7 +246,7 @@ public final class MainFrame extends JFrame {
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
                 }
-                int otherChessColor = personColor == ChessMap.WHITE ? ChessMap.BLACK : ChessMap.WHITE;
+                int otherChessColor = personColor == ChessMap.w ? ChessMap.b : ChessMap.w;
                 if (chessMap.nextChessColor() == otherChessColor && !continu.isEnabled()) {
                     chessMap.aiIsStop = true;
                     try {
@@ -255,27 +255,27 @@ public final class MainFrame extends JFrame {
                         interruptedException.printStackTrace();
                     }
                     chessMap.aiIsStop = false;
-                    if (otherChessColor == ChessMap.BLACK) {
+                    if (otherChessColor == ChessMap.b) {
                         firstTime.removeLast();
                         firstLabel.setText(formatch(firstTime.getLast()));
                     } else {
                         lastTime.removeLast();
                         lastLabel.setText(formatch(lastTime.getLast()));
                     }
-                    if (chessMap.nextChessColor() == ChessMap.WHITE)
+                    if (chessMap.nextChessColor() == ChessMap.w)
                         jTextArea.append("White: Stop\n");
                     else
                         jTextArea.append("Black: Stop\n");
                     repentance.setEnabled(true);
                 } else if (!continu.isEnabled()) {
-                    if (personColor == ChessMap.BLACK) {
+                    if (personColor == ChessMap.b) {
                         firstTime.removeLast();
                         firstLabel.setText(formatch(firstTime.getLast()));
                     } else {
                         lastTime.removeLast();
                         lastLabel.setText(formatch(lastTime.getLast()));
                     }
-                    if (personColor == ChessMap.WHITE)
+                    if (personColor == ChessMap.w)
                         jTextArea.append("White: Stop\n");
                     else
                         jTextArea.append("Black: Stop\n");
@@ -288,11 +288,11 @@ public final class MainFrame extends JFrame {
                     Node node = chessMap.nodes.get(0);
                     chessMap.updataFlag(node.x, node.y, -1);
                     jTextArea.append("Black悔棋:(" + node.x + "," + node.y + ")\n");
-                    chessMap.chessmap[node.x][node.y] = ChessMap.EMPTY;
+                    chessMap.chessMap[node.x][node.y] = ChessMap.e;
                     chessMap.nodes.remove(0);
                 } else if (chessMap.lastChessColor() == chessMap.nextChessColor()) {
                     Node node = chessMap.nodes.get(chessMap.nodes.size() - 1);
-                    if (chessMap.lastChessColor() == ChessMap.WHITE) {
+                    if (chessMap.lastChessColor() == ChessMap.w) {
                         lastTime.removeLast();
                         lastLabel.setText(formatch(lastTime.getLast()));
                         jTextArea.append("White悔棋:(" + node.x + "," + node.y + ")\n");
@@ -301,13 +301,13 @@ public final class MainFrame extends JFrame {
                         firstLabel.setText(formatch(firstTime.getLast()));
                         jTextArea.append("Black悔棋:(" + node.x + "," + node.y + ")\n");
                     }
-                    chessMap.chessmap[node.x][node.y] = ChessMap.EMPTY;
+                    chessMap.chessMap[node.x][node.y] = ChessMap.e;
                     chessMap.updataFlag(node.x, node.y, -1);
                     chessMap.nodes.remove(chessMap.nodes.size() - 1);
                 } else {
                     Node a = chessMap.nodes.get(chessMap.nodes.size() - 1);
                     Node b = chessMap.nodes.get(chessMap.nodes.size() - 2);
-                    if (chessMap.lastChessColor() == ChessMap.WHITE) {
+                    if (chessMap.lastChessColor() == ChessMap.w) {
                         if (!continu.isEnabled() && !chessMap.isDropSuccess(a.x, a.y))
                             firstTime.removeLast();
                         lastTime.removeLast();
@@ -322,8 +322,8 @@ public final class MainFrame extends JFrame {
                         jTextArea.append("Black悔棋:(" + a.x + "," + a.y + ")\n");
                         jTextArea.append("Black悔棋:(" + b.x + "," + b.y + ")\n");
                     }
-                    chessMap.chessmap[a.x][a.y] = ChessMap.EMPTY;
-                    chessMap.chessmap[b.x][b.y] = ChessMap.EMPTY;
+                    chessMap.chessMap[a.x][a.y] = ChessMap.e;
+                    chessMap.chessMap[b.x][b.y] = ChessMap.e;
                     chessMap.updataFlag(a.x, a.y, -1);
                     chessMap.updataFlag(b.x, b.y, -1);
                     chessMap.nodes.remove(chessMap.nodes.size() - 1);
@@ -337,10 +337,10 @@ public final class MainFrame extends JFrame {
                 jpLeft.paintImmediately(jpLeft.getBounds());
             } else if (e.getSource() == continu) {
                 continu.setEnabled(false);
-                if (chessMap.nodes.size() == 0 && personColor == ChessMap.WHITE) {
+                if (chessMap.nodes.size() == 0 && personColor == ChessMap.w) {
                     firstTime.add(10L);
                     firstLabel.setText(formatch(firstTime.getLast()));
-                    chessMap.chessmap[10][10] = ChessMap.BLACK;
+                    chessMap.chessMap[10][10] = ChessMap.b;
                     chessMap.updataFlag(10, 10, 1);
                     chessMap.nodes.add(new Node(10, 10));
                     jpLeft.repaint();
@@ -351,7 +351,7 @@ public final class MainFrame extends JFrame {
                     thred.start();
                     return;
                 }
-                if (chessMap.nextChessColor() == ChessMap.WHITE) {
+                if (chessMap.nextChessColor() == ChessMap.w) {
                     thred = new TimerThread(lastLabel, lastTime);
                 } else {
                     thred = new TimerThread(firstLabel, firstTime);
@@ -396,7 +396,7 @@ public final class MainFrame extends JFrame {
             if (chessMap.nodes.size() > 0) {
                 Node node = chessMap.nodes.get(chessMap.nodes.size() - 1);
                 if (chessMap.isDropSuccess(node.x, node.y)) {
-                    if (chessMap.lastChessColor() == ChessMap.WHITE) {
+                    if (chessMap.lastChessColor() == ChessMap.w) {
                         JOptionPane.showMessageDialog(null, "白棋胜利，请选择重新开始/悔棋/保存棋谱");
                     } else {
                         JOptionPane.showMessageDialog(null, "白棋胜利，请选择重新开始/悔棋/保存棋谱");
@@ -425,7 +425,7 @@ public final class MainFrame extends JFrame {
             if (chessMap.canDrop(x, y))
                 return;
             repentance.setEnabled(true);
-            chessMap.chessmap[x][y] = chessMap.nextChessColor();
+            chessMap.chessMap[x][y] = chessMap.nextChessColor();
             chessMap.updataFlag(x, y, 1);
             chessMap.nodes.add(new Node(x, y));
             repentance.setEnabled(true);
@@ -442,7 +442,7 @@ public final class MainFrame extends JFrame {
             jpLeft.paintImmediately(jpLeft.getBounds());
             if (chessMap.isDropSuccess(x, y)) {
                 thred.isStop = true;
-                if (chessMap.lastChessColor() == ChessMap.WHITE) {
+                if (chessMap.lastChessColor() == ChessMap.w) {
                     jTextArea.append("White:win!\n");
                     JOptionPane.showMessageDialog(null, "白棋胜利，请选择重新开始/悔棋/保存棋谱");
                 } else {
@@ -481,8 +481,8 @@ public final class MainFrame extends JFrame {
     private class AICalcThread extends Thread {
         @Override
         public void run() {
-            int mainChessColor = personColor == ChessMap.WHITE ? ChessMap.BLACK : ChessMap.WHITE;
-            if (mainChessColor == ChessMap.WHITE) {
+            int mainChessColor = personColor == ChessMap.w ? ChessMap.b : ChessMap.w;
+            if (mainChessColor == ChessMap.w) {
                 thred = new TimerThread(lastLabel, lastTime);
             } else {
                 thred = new TimerThread(firstLabel, firstTime);
@@ -503,7 +503,7 @@ public final class MainFrame extends JFrame {
             jpLeft.addMouseListener(addActionListener);
             Node a = nodes.get(0);
             Node b = nodes.get(1);
-            chessMap.chessmap[a.x][a.y] = mainChessColor;
+            chessMap.chessMap[a.x][a.y] = mainChessColor;
             chessMap.nodes.add(a);
             chessMap.updataFlag(a.x, a.y, 1);
             jpLeft.repaint();
@@ -523,7 +523,7 @@ public final class MainFrame extends JFrame {
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
                 }
-                if (chessMap.lastChessColor() == ChessMap.WHITE) {
+                if (chessMap.lastChessColor() == ChessMap.w) {
                     jTextArea.append("White:win!\n");
                     JOptionPane.showMessageDialog(null, "白棋胜利，请选择重新开始/悔棋/保存棋谱");
                 } else {
@@ -535,7 +535,7 @@ public final class MainFrame extends JFrame {
                 jScrollPane.getViewport().setViewPosition(p);
                 return;
             }
-            chessMap.chessmap[b.x][b.y] = mainChessColor;
+            chessMap.chessMap[b.x][b.y] = mainChessColor;
             chessMap.nodes.add(b);
             chessMap.updataFlag(b.x, b.y, 1);
             jpLeft.repaint();
@@ -555,7 +555,7 @@ public final class MainFrame extends JFrame {
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
                 }
-                if (chessMap.lastChessColor() == ChessMap.WHITE) {
+                if (chessMap.lastChessColor() == ChessMap.w) {
                     jTextArea.append("White:win!\n");
                     JOptionPane.showMessageDialog(null, "白棋胜利，请选择重新开始/悔棋/保存棋谱");
                 } else {
@@ -567,7 +567,7 @@ public final class MainFrame extends JFrame {
                 jScrollPane.getViewport().setViewPosition(p);
                 return;
             }
-            if (personColor == ChessMap.WHITE)
+            if (personColor == ChessMap.w)
                 thred = new TimerThread(lastLabel, lastTime);
             else
                 thred = new TimerThread(firstLabel, firstTime);
@@ -585,7 +585,6 @@ public final class MainFrame extends JFrame {
             this.label = label;
             this.time = time;
         }
-
         @Override
         public void run() {
             long updateTime = 0;
